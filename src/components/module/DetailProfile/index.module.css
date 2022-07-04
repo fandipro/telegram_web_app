@@ -1,0 +1,24 @@
+.photoProfile {
+  border-radius: 20px;
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+
+.inputType {
+  width: 220px;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+
+.inputTypeBio {
+  width: 220px;
+  /* height: 70px; */
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  margin-top: 10px;
+  /* padding-bottom: -130px; */
+}

@@ -1,38 +1,36 @@
-.home {
-  width: 100%;
+.main {
   height: 100vh;
-  margin: 0 auto;
+  overflow-y: hidden;
+}
+
+.main-chat {
+  background-color: #fafafa;
+  /* background-color: pink; */
+}
+
+.header-chat {
+  background-color: white;
+}
+
+/* chat */
+.hanif .chat-messages {
   display: flex;
-  /* background-color: red; */
-  box-shadow: 0px 0px 100px rgba(126, 152, 223, 0.05);
+  flex-direction: column;
+  height: 75vh;
+  overflow-y: scroll;
 }
 
-.home aside {
-  /* background-color: red; */
-  overflow-y: auto;
-  /* Firefox */
-  scrollbar-width: none;
-  /* Internet Explorer 10+ */
-  -ms-overflow-style: none;
-  width: 28%;
-
-  /* Not Showing Scrollbar in Google Chrome */
+.hanif .chat-message-left,
+.hanif .chat-message-right {
+  display: flex;
+  flex-shrink: 0;
 }
 
-.chat {
-  margin-top: 30px;
-  padding: 0 50px;
-  padding-bottom: 150px;
-  padding-top: 130px;
-  overflow-y: auto;
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* Internet Explorer 10+ */
-  height: 100%;
+.hanif .chat-message-left {
+  margin-right: auto;
 }
 
-.chat::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+.hanif .chat-message-right {
+  flex-direction: row-reverse;
+  margin-left: auto;
 }
