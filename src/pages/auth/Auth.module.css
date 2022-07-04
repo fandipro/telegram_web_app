@@ -1,0 +1,77 @@
+.tittle{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7E98DF;
+    margin-bottom: 15px;
+}
+
+.goBack{
+    position: absolute;
+    left: 65px;
+    top: 22px;
+}
+
+.header{
+    color: #232323;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    margin-left: 50px !important;
+}
+
+.formLabel{
+    color: #848484;
+}
+
+.formInput{
+    border: none;
+    border-bottom: 1px solid #232323;
+    margin-bottom: 25px;
+    width: 350px;
+    outline: none;
+}
+
+.buttonRegister{
+    background-color: #7E98DF;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    width: 350px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.labelRegisterWith{
+    color: #848484;
+    margin-bottom: 20px;
+}
+
+.borderLogin{
+    border-top: 1px solid black;
+}
+
+.buttonRegisterGoogle{
+    background-color: white;
+    border-radius: 50px;
+    border: 1px solid #7E98DF;
+    color: #7E98DF;
+    width: 350px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.iconGoogle{
+    margin-right: 13px;
+    margin-bottom: 2px;
+}
+
+.labelDonthaveAcoount{
+    margin-left: 17%;
+}
+
+.linkSignUp{
+    margin-left: 10px;
+    text-decoration: none;
+    color: #7E98DF;
+}

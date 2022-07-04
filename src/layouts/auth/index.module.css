@@ -1,0 +1,13 @@
+.layout_auth {
+  background-color: white;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.layout_auth .children {
+  display: flex;
+  height: max-content;
+}
