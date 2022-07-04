@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "reactstrap";
-import { Drawer } from "react-modern-drawer";
+import Drawer from "react-modern-drawer";
 import Menu from "../../../assets/icons/menu.svg";
 import settingicon from "../../../assets/icons/setting.svg";
 import callicon from "../../../assets/icons/call.svg";
