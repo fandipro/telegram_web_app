@@ -26,3 +26,24 @@ export const register = async (data, alert, navigate) => {
     }
   }
 };
+
+export const login = (data, alert, navigate) => async (dispatch) => {
+  try {
+    dispatch({ type: "USER_LOGIN_PENDING" });
+    const result = await axios.post("http://localhost:4000/v1/auth/login", data);
+    const user = result.data.data;
+    localStorage.setItem("token", user.token);
+    localStorage.setItem("id", user.id);
+    // localStorage.setItem("refreshToken", user.refreshToken);
+    dispatch({ type: "USER_LOGIN_SUCCESS", payload: { user } });
+    alert.fire({
+      title: "Welcome",
+      text: `${user.name}`,
+      icon: "Success",
+    });
+    navigate("/home");
+  } catch (error) {
+    console.log(error);
+    alert("Password dan email salah");
+  }
+};

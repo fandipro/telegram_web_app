@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "reactstrap";
 import Drawer from "react-modern-drawer";
+import 'react-modern-drawer/dist/index.css'
 import Menu from "../../../assets/icons/menu.svg";
 import settingicon from "../../../assets/icons/setting.svg";
 import callicon from "../../../assets/icons/call.svg";
@@ -10,22 +11,33 @@ import invitefriend from "../../../assets/icons/inviteFriend.svg";
 import FAQ from "../../../assets/icons/FAQ.svg";
 import logout from "../../../assets/icons/logout.svg";
 import plus from "../../../assets/icons/plus.svg";
-import Profile from "../Profile";
+// import Profile from "../Profile";
 
-const ListChat = ({ listContact, setActiveReceiver, setSearchName, login, setListChat, socketio }) => {
+const ListChat = ({ listContact, user, setActiveReceiver, setSearchName, login, setListChat, socketio, ...props }) => {
   const [dropdownOpen, setOpen] = useState(false);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   // const [isReceiverProfile, setReceiverProfile] = useState(false)
   // const [searchName, setSearchName] = useState('')
 
   // const [activeReceiver, setActiveReceiver] = useState({})
+  console.log('apakah ini jalan');
+  console.log(user);
   const selectReceiver = (item) => {
     setListChat([]);
     setActiveReceiver(item);
-    localStorage.setItem("receiver", JSON.stringify(item));
-    socketio.emit("join-room", login);
+    console.log('apakah receiver jalan');
+    // const data2 = {
+    //   message: 'aku adalah seorang kapiten'
+    // }
+    // socketio.emit('ping', data2)
+    // socketio.on('ping-response', (  ) => {
+    //   console.log('apakah receiver 2 jalan');
+    //   console.log(response);
+    // })
+    socketio.emit("join-room", user);
+    // console.log('apakah ini jalan');
     const data = {
-      sender: login.id,
+      sender: user.id,
       receiver: item.id,
     };
     socketio.emit("chat-history", data);
@@ -33,6 +45,8 @@ const ListChat = ({ listContact, setActiveReceiver, setSearchName, login, setLis
   const toggleDrawer = () => {
     setIsOpenProfile((prevState) => !prevState);
   };
+
+  // console.log(listContact);
   return (
     <div className="col-12 col-lg-5 col-xl-3 bg-primary border-right">
       {/* header sidebar */}
@@ -139,7 +153,7 @@ const ListChat = ({ listContact, setActiveReceiver, setSearchName, login, setLis
           className="bla bla bla bg-warning"
           style={{ width: "335px" }}
         >
-          <Profile />
+          {/* <Profile /> */}
         </Drawer>
         {/* search name */}
         <form action="">
@@ -157,18 +171,22 @@ const ListChat = ({ listContact, setActiveReceiver, setSearchName, login, setLis
           </div>
         </form>
       </div>
-      {listContact.isLoading ? (
+      {props.isLoading ? (
         <div>Laoding</div>
       ) : (
-        listContact.data.map((items, index) =>
-          items.id !== login.id ? (
+        listContact?.map((items, index) =>
+          items.user.id !== user.id ? (
             <div key={index} className="px-3 d-none d-md-block">
-              <button onClick={() => selectReceiver(items)}>
+              {/* <button onClick={() => selectReceiver(items)}>
+              
+              </button> */}
+
+              <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
                 <div className="d-flex align-items-start">
                   {items.photo ? (
                     <img alt="" src={`${process.env.REACT_APP_API_URL}/${items.photo}`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
                   ) : (
-                    <img alt="" src={`${process.env.REACT_APP_API_URL}/user.png`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
+                    <img alt="" src={`http://localhost:4000/img/default.png`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
                   )}
                   <div className="flex-grow-1 ml-3">
                     <label htmlFor=""> {items.username}</label>
@@ -187,11 +205,7 @@ const ListChat = ({ listContact, setActiveReceiver, setSearchName, login, setLis
                     </div>
                   </div>
                 </div>
-              </button>
-
-              {/* <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
-                
-              </a> */}
+              </a>
             </div>
           ) : null
         )

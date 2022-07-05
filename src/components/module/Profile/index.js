@@ -5,7 +5,7 @@ import editButton from "../../../assets/icons/editButton.svg";
 import avatar from "../../../assets/images/ava.png";
 import Swal from "sweetalert2";
 
-const Profile = () => {
+const Profile = ({user}) => {
   const profile = useSelector((state) => state.profile);
   const [photo, setPhoto] = useState("");
   const [isChangePhoto, setIsChangePhoto] = useState(false);

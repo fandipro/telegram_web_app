@@ -1,11 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import "./login.module.css";
 import styleAuth from "../Auth.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import iconGoogle from "../../../assets/icons/google.svg";
+import { login } from "../../../config/redux/action/auth";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [form, setForm] = useState({
+    email: '',
+    password: ''
+  })
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    }
+    )
+  }
+
+  const onSubmitted = (e) => {
+    e.preventDefault()
+    if (form.email === '' || form.password === '') {
+      Swal.fire({
+        title: 'error',
+        text: 'input must be filled',
+        icon: 'error'
+      })
+    } else {
+      dispatch(login(form, Swal, navigate))
+    }
+  }
+
+  console.log(form);
   return (
     <div
       style={{
@@ -24,19 +56,19 @@ const Login = () => {
           </div>
           <h6 className={`card-subtitle ${styleAuth.header}`}>Hi, Welcome back!</h6>
           <form
-          // onSubmit={(e) => {
-          //   onSubmitted(e);
-          // }}
+            onSubmit={(e) => {
+              onSubmitted(e);
+            }}
           >
             <div className="d-flex flex-column" style={{ marginLeft: "50px", marginRight: "50px" }}>
               <label className={styleAuth.formLabel} htmlFor="">
                 Email
               </label>
-              <input className={styleAuth.formInput} type="email" />
+              <input name="email" onChange={(e) => handleChange(e)} className={styleAuth.formInput} type="email" />
               <label className={styleAuth.formLabel} htmlFor="">
                 Password
               </label>
-              <input className={styleAuth.formInput} type="password" />
+              <input name="password" onChange={(e) => handleChange(e)} className={styleAuth.formInput} type="password" />
 
               <button type="submit" className={styleAuth.buttonRegister}>
                 Login
