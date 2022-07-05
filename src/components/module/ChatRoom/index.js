@@ -6,8 +6,9 @@ import profileMenu from "../../../assets/icons/profileMenu.svg";
 import plus from "../../../assets/icons/plus.svg";
 import emoticon from "../../../assets/icons/emoticon.svg";
 import camera from "../../../assets/icons/camera.svg";
+import Swal from "sweetalert2";
 
-const ChatRoom = ({ activeReceiver, listChat, login, avatar, setListChat, socketio, chat, setChat, Swal }) => {
+const ChatRoom = ({ receiver, listChat, setListChat, socketio, ...props }) => {
   const [isOpenProfile1, setIsOpenProfile1] = useState(false);
 
   const toggleDrawer1 = () => {
@@ -16,32 +17,35 @@ const ChatRoom = ({ activeReceiver, listChat, login, avatar, setListChat, socket
     setIsOpenProfile1((prevState) => !prevState);
   };
 
-  //   console.log(activeReceiver);
-
   const onSubmitMessage = (e) => {
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("user"));
+    // const user = JSON.parse(localStorage.getItem("user"));
     const receiver = JSON.parse(localStorage.getItem("receiver"));
 
     const payload = {
-      sender: user.username,
-      receiver: receiver.username,
-      chat,
+      sender_id: props.user.id,
+      receiver_id: receiver.id,
+      sender: props.user.name,
+      receiver: receiver.name,
+      sender_avatar: props.user.avatar,
+      receiver_avatar: receiver.avatar,
+      chat: props.chat,
     };
 
     setListChat([...listChat, payload]);
 
     const data = {
-      sender: user.id,
-      receiver: activeReceiver.id,
-      chat,
+      sender: props.user.id,
+      receiver: receiver.user.id,
+      chat: props.chat,
     };
+    console.log(data);
     socketio.emit("send-message", data);
-    setChat("");
+    props.setChat("");
   };
 
   const onDeleteMessage = (items) => {
-    console.log(items);
+    // console.log(items);
     Swal.fire({
       title: "Are you sure to delete this message?",
       text: "You won't be able to revert this!",
@@ -55,29 +59,33 @@ const ChatRoom = ({ activeReceiver, listChat, login, avatar, setListChat, socket
         const data = {
           sender: items.sender,
           receiver: items.receiver,
-          chatId: items.id,
+          id: items.id,
         };
         socketio.emit("delete-message", data);
+        listChat.pop()
         Swal.fire("Deleted!", "Your message has been deleted.", "success");
+        setListChat([...listChat])
       }
     });
   };
 
+  console.log(receiver);
+
   return (
     <div className="col-12 col-lg-7 col-xl-9 main-chat">
-      {activeReceiver ? (
+      {receiver.user ? (
         // header chat
         <div className="py-2 px-4 d-none bg-primary d-lg-block header-chat">
           <div className="d-flex align-items-center py-1">
             <div className="position-relative">
-              {activeReceiver.photo ? (
+              {receiver.user.avatar ? (
                 <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} style={{ marginRight: "10px", borderRadius: "10px" }} width="40" height="40" />
               ) : (
                 <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} style={{ marginRight: "10px", borderRadius: "10px" }} width="40" height="40" />
               )}
             </div>
             <div className="flex-grow-1 pl-3">
-              <strong>{activeReceiver.username}</strong>
+              <strong>{receiver.user.username}</strong>
               <div style={{ color: "#7E98DF" }}>Online</div>
             </div>
             <div>
@@ -101,18 +109,18 @@ const ChatRoom = ({ activeReceiver, listChat, login, avatar, setListChat, socket
 
       {/* isi chat */}
       <div className="position-relative bg-warning">
-        {activeReceiver ? (
+        {receiver.user ? (
           <div style={{ overflow: "auto " }} className="chat-messages p-4">
             {listChat.map((items, index) => (
               <div key={index}>
-                {items.sender === login.username ? (
+                {items.sender_id === props.user.id ? (
                   // balo chat right
                   <div className="chat-message-right pb-4">
                     <div>
-                      {login.photo ? (
-                        <img alt="" src={`${process.env.REACT_APP_API_URL}/${login.photo}`} className="rounded-circle mr-1" width="40" height="40" />
+                      {props.user.avatar ? (
+                        <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} className="rounded-circle mr-1" width="40" height="40" />
                       ) : (
-                        <img alt="" src={avatar} className="rounded-circle mr-1" width="40" height="40" />
+                        <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} className="rounded-circle mr-1" width="40" height="40" />
                       )}
 
                       <div className="text-muted small text-nowrap mt-2">2:33 am</div>
@@ -140,10 +148,10 @@ const ChatRoom = ({ activeReceiver, listChat, login, avatar, setListChat, socket
                 ) : (
                   <div className="chat-message-left pb-4">
                     <div>
-                      {activeReceiver.photo ? (
-                        <img alt="" src={`${process.env.REACT_APP_API_URL}/${activeReceiver.photo}`} className="rounded-circle mr-1" width="40" height="40" />
+                      {receiver ? (
+                        <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} className="rounded-circle mr-1" width="40" height="40" />
                       ) : (
-                        <img alt="" src={avatar} className="rounded-circle mr-1" width="40" height="40" />
+                        <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} className="rounded-circle mr-1" width="40" height="40" />
                       )}
 
                       <div className="text-muted small text-nowrap mt-2">2:34 am</div>
@@ -184,8 +192,8 @@ const ChatRoom = ({ activeReceiver, listChat, login, avatar, setListChat, socket
       <form onSubmit={onSubmitMessage} action="">
         <div style={{ backgroundColor: "white", position: "relative" }} className="input-group">
           <input
-            onChange={(e) => setChat(e.target.value)}
-            value={chat}
+            onChange={(e) => props.setChat(e.target.value)}
+            value={props.chat}
             style={{
               backgroundColor: "#FAFAFA",
               width: "20px",

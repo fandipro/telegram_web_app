@@ -13,7 +13,8 @@ const Home = () => {
     const [socket, setSocketio] = useState(null)
     const [listChat, setListChat] = useState([])
     const [searchName, setSearchName] = useState('')
-    const [activeReceiver, setActiveReceiver] = useState({})
+    const [chat, setChat] = useState('')
+    const [receiver, setReceiver] = useState({})
     const dispatch = useDispatch()
 
     const { listContact } = useSelector((state) => {
@@ -30,12 +31,20 @@ const Home = () => {
     useEffect(() => {
         const resultSocket = io("http://localhost:4000")
         resultSocket.on('send-message-response', (response) => {
+            console.log('apakah respon jalan');
+            console.log(response);
+
             const receiver = JSON.parse(localStorage.getItem('receiver'))
-            if (
-                receiver.username === response[0].sender ||
-                receiver.username === response[0].receiver
-            ) {
-                setListChat(response)
+            console.log('apakah use jalan');
+            console.log(receiver);
+            console.log('apakah use jalan');
+            if (response.length) {
+                if (
+                    receiver.user.id === response[0].sender_id ||
+                    receiver.user.id === response[0].receiver_id
+                ) {
+                    setListChat(response)
+                }
             }
         })
         setSocketio(resultSocket)
@@ -49,17 +58,17 @@ const Home = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchName])
 
-    console.log(listContact);
-    console.log(profile);
+    // console.log(listContact);
+    // console.log(profile);
 
 
     return (
         <div className='content main'>
             <Card>
                 <div className='row g-0'>
-                    <ListChat user={profile} isLoading={isLoading} socketio={socket} setActiveReceiver={setActiveReceiver} setListChat={setListChat} listContact={listContact}>
+                    <ListChat user={profile} setSearchName={setSearchName} isLoading={isLoading} receiver={receiver} socketio={socket} setReceiver={setReceiver} setListChat={setListChat} listContact={listContact}>
                     </ListChat>
-                    <ChatRoom listChat={listChat} socketio={socket} setListChat={setListChat}>
+                    <ChatRoom listChat={listChat} receiver={receiver} user={profile} socketio={socket} setListChat={setListChat} chat={chat} setChat={setChat}>
                     </ChatRoom>
                 </div>
             </Card >

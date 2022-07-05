@@ -13,18 +13,19 @@ import logout from "../../../assets/icons/logout.svg";
 import plus from "../../../assets/icons/plus.svg";
 // import Profile from "../Profile";
 
-const ListChat = ({ listContact, user, setActiveReceiver, setSearchName, login, setListChat, socketio, ...props }) => {
+const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
   const [dropdownOpen, setOpen] = useState(false);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   // const [isReceiverProfile, setReceiverProfile] = useState(false)
   // const [searchName, setSearchName] = useState('')
 
   // const [activeReceiver, setActiveReceiver] = useState({})
-  console.log('apakah ini jalan');
-  console.log(user);
+  // console.log('apakah ini jalan');
+  // console.log(user);
   const selectReceiver = (item) => {
     setListChat([]);
-    setActiveReceiver(item);
+    props.setReceiver(item)
+    localStorage.setItem('receiver', JSON.stringify(item));
     console.log('apakah receiver jalan');
     // const data2 = {
     //   message: 'aku adalah seorang kapiten'
@@ -36,9 +37,11 @@ const ListChat = ({ listContact, user, setActiveReceiver, setSearchName, login, 
     // })
     socketio.emit("join-room", user);
     // console.log('apakah ini jalan');
+    // console.log(user.id);
+    // console.log(item.user.id);
     const data = {
       sender: user.id,
-      receiver: item.id,
+      receiver: item.user.id,
     };
     socketio.emit("chat-history", data);
   };
@@ -47,6 +50,7 @@ const ListChat = ({ listContact, user, setActiveReceiver, setSearchName, login, 
   };
 
   // console.log(listContact);
+  // console.log(props.receiver);
   return (
     <div className="col-12 col-lg-5 col-xl-3 bg-primary border-right">
       {/* header sidebar */}
@@ -160,7 +164,7 @@ const ListChat = ({ listContact, user, setActiveReceiver, setSearchName, login, 
           <div className="d-flex align-items-center">
             <div className="flex-grow-1">
               <input
-                onChange={(e) => setSearchName(e.target.value)}
+                onChange={(e) => props.setSearchName(e.target.value)}
                 type="text"
                 className="form-control my-3"
                 placeholder="Search..."
@@ -177,10 +181,6 @@ const ListChat = ({ listContact, user, setActiveReceiver, setSearchName, login, 
         listContact?.map((items, index) =>
           items.user.id !== user.id ? (
             <div key={index} className="px-3 d-none d-md-block">
-              {/* <button onClick={() => selectReceiver(items)}>
-              
-              </button> */}
-
               <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
                 <div className="d-flex align-items-start">
                   {items.photo ? (
@@ -189,7 +189,7 @@ const ListChat = ({ listContact, user, setActiveReceiver, setSearchName, login, 
                     <img alt="" src={`http://localhost:4000/img/default.png`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
                   )}
                   <div className="flex-grow-1 ml-3">
-                    <label htmlFor=""> {items.username}</label>
+                    <label htmlFor=""> {items.user.username}</label>
                     <label
                       htmlFor=""
                       style={{

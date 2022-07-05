@@ -24,7 +24,7 @@ export const getListContact = (search) => async (dispatch) => {
 export const getProfile = () => async (dispatch) => {
     try {
         const token = localStorage.getItem('token')
-        console.log(token);
+        // console.log(token);
         dispatch({ type: "GET_PROFILE_PENDING" });
         console.log('apakah dispatch jalan');
         const result = await axios.get(`${process.env.REACT_APP_API_URL}/users/profile`, {
@@ -34,7 +34,7 @@ export const getProfile = () => async (dispatch) => {
         })
         // console.log(result);
         const profile = result.data.data
-        console.log(profile);
+        // console.log(profile);
         dispatch({ type: 'GET_PROFILE_SUCCESS', payload: profile })
     } catch (error) {
         console.log(error);
