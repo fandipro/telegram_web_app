@@ -12,6 +12,7 @@ import FAQ from "../../../assets/icons/FAQ.svg";
 import logout from "../../../assets/icons/logout.svg";
 import plus from "../../../assets/icons/plus.svg";
 import Profile from "../Profile";
+import avatar from "../../../assets/images/ava.png";
 
 const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
   const [dropdownOpen, setOpen] = useState(false);
@@ -35,7 +36,7 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
     //   console.log('apakah receiver 2 jalan');
     //   console.log(response);
     // })
-    socketio.emit("join-room", user);
+    // socketio.emit("join-room", user);
     // console.log('apakah ini jalan');
     // console.log(user.id);
     // console.log(item.user.id);
@@ -49,14 +50,14 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
     setIsOpenProfile((prevState) => !prevState);
   };
 
-  // console.log(listContact);
+  console.log(listContact);
   // console.log(props.receiver);
   return (
-    <div className="col-12 col-lg-5 col-xl-3 bg-primary border-right">
+    <div className="col-12 col-lg-5 col-xl-3 border-right">
       {/* header sidebar */}
-      <div className="px-4 bg-warning d-none d-md-block">
+      <div className="px-4 d-none d-md-block">
         {/* menu */}
-        <div className="bg-primary">
+        <div className="">
           <label
             style={{
               marginTop: "20px",
@@ -184,13 +185,13 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
               <div key={index} className="px-3 d-none d-md-block">
                 <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
                   <div className="d-flex align-items-start">
-                    {items.photo ? (
-                      <img alt="" src={`${process.env.REACT_APP_API_URL}/${items.photo}`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
+                    {items.user.avatar ? (
+                      <img alt="" src={items.user.avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
                     ) : (
-                      <img alt="" src={`http://localhost:4000/img/default.png`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
+                      <img alt="" src={avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
                     )}
                     <div className="flex-grow-1 ml-3">
-                      <label htmlFor=""> {items.user.username}</label>
+                      <label htmlFor=""> {items.user.name}</label>
                       <label
                         htmlFor=""
                         style={{
@@ -199,10 +200,10 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
                           right: "0px",
                         }}
                       >
-                        15.30
+                        {items.message[0]?.created_at}
                       </label>
                       <div className="small" style={{ color: "#7E98DF" }}>
-                        <span className="fas fa-circle chat-online"></span> Online
+                        <span className="fas fa-circle chat-online">{items.message[0]?.chat}</span>
                       </div>
                     </div>
                   </div>

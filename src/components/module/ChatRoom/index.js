@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Drawer from "react-modern-drawer";
 import DetailProfile from "../DetailProfile";
 
@@ -6,12 +6,16 @@ import profileMenu from "../../../assets/icons/profileMenu.svg";
 import plus from "../../../assets/icons/plus.svg";
 import emoticon from "../../../assets/icons/emoticon.svg";
 import camera from "../../../assets/icons/camera.svg";
+import defaultAva from "../../../assets/images/ava.png";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { getListContact } from "../../../config/redux/action/user";
 
-const ChatRoom = ({ receiver, listChat, setListChat, socketio, ...props }) => {
+const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }) => {
   const [isOpenProfile1, setIsOpenProfile1] = useState(false);
+  const dispatch = useDispatch();
 
-  const toggleDrawer1 = () => {
+  const toggleDrawer2 = () => {
     // const receiver = JSON.parse(localStorage.getItem("receiver"));
     // dispatch(detailProfilePeople(receiver.id))
     setIsOpenProfile1((prevState) => !prevState);
@@ -62,26 +66,31 @@ const ChatRoom = ({ receiver, listChat, setListChat, socketio, ...props }) => {
           id: items.id,
         };
         socketio.emit("delete-message", data);
-        listChat.pop()
+        listChat.pop();
         Swal.fire("Deleted!", "Your message has been deleted.", "success");
-        setListChat([...listChat])
+        setListChat([...listChat]);
       }
     });
   };
 
-  console.log(receiver);
+  useEffect(() => {
+    dispatch(getListContact(""));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listChat]);
+
+  console.log(listChat);
 
   return (
-    <div className="col-12 col-lg-7 col-xl-9 main-chat">
+    <div className={`${style.main_chat} col-12 col-lg-7 col-xl-9`}>
       {receiver.user ? (
         // header chat
-        <div className="py-2 px-4 d-none bg-primary d-lg-block header-chat">
+        <div className={`${style.header_chat} py-2 px-4 d-none bg-primary d-lg-block`}>
           <div className="d-flex align-items-center py-1">
             <div className="position-relative">
               {receiver.user.avatar ? (
-                <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} style={{ marginRight: "10px", borderRadius: "10px" }} width="40" height="40" />
+                <img alt="" src={receiver.user.avatar} style={{ marginRight: "10px", borderRadius: "10px" }} width="40" height="40" />
               ) : (
-                <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} style={{ marginRight: "10px", borderRadius: "10px" }} width="40" height="40" />
+                <img alt="" src={defaultAva} style={{ marginRight: "10px", borderRadius: "10px" }} width="40" height="40" />
               )}
             </div>
             <div className="flex-grow-1 pl-3">
@@ -89,41 +98,37 @@ const ChatRoom = ({ receiver, listChat, setListChat, socketio, ...props }) => {
               <div style={{ color: "#7E98DF" }}>Online</div>
             </div>
             <div>
-              <button onClick={toggleDrawer1} className="btn btn-light border btn-lg px-3">
+              <button onClick={toggleDrawer2} className="btn btn-light border btn-lg px-3">
                 <img src={profileMenu} width="24" height="24" alt="" />
               </button>
             </div>
-            <Drawer open={isOpenProfile1} onClose={toggleDrawer1} direction="right" className="bla bla bla" style={{ width: "335px" }}>
-              <DetailProfile />
+            <Drawer open={isOpenProfile1} onClose={toggleDrawer2} direction="right" className="toggle" style={{ width: "335px" }}>
+              <DetailProfile receiver={receiver} />
             </Drawer>
           </div>
         </div>
       ) : (
-        <div className="py-2 px-4 d-none d-lg-block header-chat">
+        <div className={`${style.header_chat} py-2 px-4 d-none d-lg-block`}>
           <div style={{ height: "55px" }} className="d-flex align-items-center py-1">
             {" "}
-            cek 12
+            {/* cek 12 */}
           </div>
         </div>
       )}
 
       {/* isi chat */}
-      <div className="position-relative bg-warning">
+      <div className="position-relative">
         {receiver.user ? (
-          <div style={{ overflow: "auto " }} className="chat-messages p-4">
+          <div style={{ overflow: "auto " }} className={`${style.chat_messages} p-4`}>
             {listChat.map((items, index) => (
               <div key={index}>
                 {items.sender_id === props.user.id ? (
-                  // balo chat right
-                  <div className="chat-message-right pb-4">
+                  // bingkai chat right
+                  <div className={`${style.chat_message_right} pb-4`}>
                     <div>
-                      {props.user.avatar ? (
-                        <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} className="rounded-circle mr-1" width="40" height="40" />
-                      ) : (
-                        <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} className="rounded-circle mr-1" width="40" height="40" />
-                      )}
+                      {items.sender_avatar ? <img alt="" src={items.sender_avatar} className="rounded-circle mr-1" width="40" height="40" /> : <img alt="" src={defaultAva} className="rounded-circle mr-1" width="40" height="40" />}
 
-                      <div className="text-muted small text-nowrap mt-2">2:33 am</div>
+                      <div className="text-muted small text-nowrap mt-2">{items.created_at}</div>
                     </div>
                     <div
                       style={{
@@ -146,15 +151,12 @@ const ChatRoom = ({ receiver, listChat, setListChat, socketio, ...props }) => {
                     </span>
                   </div>
                 ) : (
-                  <div className="chat-message-left pb-4">
+                  // bingkai chat left
+                  <div className={`${style.chat_message_left} pb-4`}>
                     <div>
-                      {receiver ? (
-                        <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} className="rounded-circle mr-1" width="40" height="40" />
-                      ) : (
-                        <img alt="" src={`${process.env.REACT_APP_API_URL}/img/default.png`} className="rounded-circle mr-1" width="40" height="40" />
-                      )}
+                      {items.sender_avatar ? <img alt="" src={items.sender_avatar} className="" width="40" height="40" /> : <img alt="rava" src={defaultAva} className="rounded-circle mr-1" width="40" height="40" />}
 
-                      <div className="text-muted small text-nowrap mt-2">2:34 am</div>
+                      <div className="text-muted small text-nowrap mt-2">{items.created_at}</div>
                     </div>
                     {/* balon chat left */}
                     <div
@@ -182,7 +184,7 @@ const ChatRoom = ({ receiver, listChat, setListChat, socketio, ...props }) => {
             ))}
           </div>
         ) : (
-          <div className="chat-messages p-4 d-flex justify-content-center align-items-center">
+          <div className={`${style.chat_messages} p-4 d-flex justify-content-center align-items-center`}>
             <label style={{ color: "#848484", fontSize: "20px" }} htmlFor="">
               Please select a chat to start messaging
             </label>

@@ -70,7 +70,7 @@ const Home = () => {
       <Card>
         <div className="row g-0">
           <ListChat user={profile} setSearchName={setSearchName} isLoading={isLoading} receiver={receiver} socketio={socket} setReceiver={setReceiver} setListChat={setListChat} listContact={listContact}></ListChat>
-          <ChatRoom listChat={listChat} receiver={receiver} user={profile} socketio={socket} setListChat={setListChat} chat={chat} setChat={setChat}></ChatRoom>
+          <ChatRoom style={style} listChat={listChat} receiver={receiver} user={profile} socketio={socket} setListChat={setListChat} chat={chat} setChat={setChat}></ChatRoom>
         </div>
       </Card>
     </div>

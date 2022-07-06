@@ -4,34 +4,38 @@
   /* background-color: black; */
 }
 
-.main-chat {
-  background-color: #fafafa;
+.main_chat {
+  /* background-color: #fafafa; */
+  background-color: lightgray;
   /* background-color: pink; */
 }
 
-.header-chat {
+.header_chat {
   background-color: white;
 }
 
 /* chat */
-.hanif .chat-messages {
+.main .chat_messages {
   display: flex;
   flex-direction: column;
   height: 75vh;
+  /* background-color: red; */
   overflow-y: scroll;
 }
 
-.hanif .chat-message-left,
-.hanif .chat-message-right {
+.main .chat_message_left,
+.main .chat_message_right {
   display: flex;
   flex-shrink: 0;
 }
 
-.hanif .chat-message-left {
+.main .chat_message_left {
   margin-right: auto;
+  /* background-color: red; */
+  /* flex-direction: row-reverse; */
 }
 
-.hanif .chat-message-right {
+.main .chat_message_right {
   flex-direction: row-reverse;
   margin-left: auto;
 }
