@@ -4,6 +4,21 @@
   margin-bottom: 25px;
 }
 
+/* .account hr {
+  margin: 200px;
+} */
+
+.hr {
+  margin-top: -5px;
+  width: 90%;
+}
+
+.text {
+  margin-top: -10px;
+  font-size: 14px;
+  color: gray;
+}
+
 .inputType {
   width: 220px;
   border: none;

@@ -11,7 +11,7 @@ import invitefriend from "../../../assets/icons/inviteFriend.svg";
 import FAQ from "../../../assets/icons/FAQ.svg";
 import logout from "../../../assets/icons/logout.svg";
 import plus from "../../../assets/icons/plus.svg";
-// import Profile from "../Profile";
+import Profile from "../Profile";
 
 const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
   const [dropdownOpen, setOpen] = useState(false);
@@ -154,10 +154,10 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
           open={isOpenProfile}
           onClose={toggleDrawer}
           direction="left"
-          className="bla bla bla bg-warning"
+          className="sidebar"
           style={{ width: "335px" }}
         >
-          {/* <Profile /> */}
+          <Profile user={user} />
         </Drawer>
         {/* search name */}
         <form action="">
@@ -175,43 +175,45 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
           </div>
         </form>
       </div>
-      {props.isLoading ? (
-        <div>Laoding</div>
-      ) : (
-        listContact?.map((items, index) =>
-          items.user.id !== user.id ? (
-            <div key={index} className="px-3 d-none d-md-block">
-              <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
-                <div className="d-flex align-items-start">
-                  {items.photo ? (
-                    <img alt="" src={`${process.env.REACT_APP_API_URL}/${items.photo}`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
-                  ) : (
-                    <img alt="" src={`http://localhost:4000/img/default.png`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
-                  )}
-                  <div className="flex-grow-1 ml-3">
-                    <label htmlFor=""> {items.user.username}</label>
-                    <label
-                      htmlFor=""
-                      style={{
-                        color: "#848484",
-                        position: "absolute",
-                        right: "0px",
-                      }}
-                    >
-                      15.30
-                    </label>
-                    <div className="small" style={{ color: "#7E98DF" }}>
-                      <span className="fas fa-circle chat-online"></span> Online
+      {
+        props.isLoading ? (
+          <div>Laoding</div>
+        ) : (
+          listContact?.map((items, index) =>
+            items.user.id !== user.id ? (
+              <div key={index} className="px-3 d-none d-md-block">
+                <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
+                  <div className="d-flex align-items-start">
+                    {items.photo ? (
+                      <img alt="" src={`${process.env.REACT_APP_API_URL}/${items.photo}`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
+                    ) : (
+                      <img alt="" src={`http://localhost:4000/img/default.png`} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
+                    )}
+                    <div className="flex-grow-1 ml-3">
+                      <label htmlFor=""> {items.user.username}</label>
+                      <label
+                        htmlFor=""
+                        style={{
+                          color: "#848484",
+                          position: "absolute",
+                          right: "0px",
+                        }}
+                      >
+                        15.30
+                      </label>
+                      <div className="small" style={{ color: "#7E98DF" }}>
+                        <span className="fas fa-circle chat-online"></span> Online
+                      </div>
                     </div>
                   </div>
-                </div>
-              </a>
-            </div>
-          ) : null
+                </a>
+              </div>
+            ) : null
+          )
         )
-      )}
+      }
       <hr className="d-block d-lg-none mt-1 mb-0" />
-    </div>
+    </div >
   );
 };
 
