@@ -58,3 +58,22 @@ export const updateProfile = async (data, alert) => {
       });
   });
 };
+
+export const updateAva = async (data) => {
+  return new Promise((resolve, reject) => {
+    const token = localStorage.getItem("token");
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/users/profile`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        "Content-Type": "multipart/form-data",
+      })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};

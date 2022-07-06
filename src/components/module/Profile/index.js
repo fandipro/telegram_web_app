@@ -7,11 +7,12 @@ import Swal from "sweetalert2";
 import Label from "../../base/Label";
 import Button from "../../base/Button"
 // import { updateProfile } from "../../../config/redux/action/user";
-import { getProfile, updateProfile } from "../../../config/redux/action/user";
+import { getProfile, updateProfile, updateAva } from "../../../config/redux/action/user";
 
 const Profile = ({ user }) => {
   const { profile } = useSelector((state) => state.user);
-  const [photo, setPhoto] = useState("");
+  const [avaPreview, setAvaPreview] = useState("")
+  const [avatar, setAvatar] = useState("");
   const [isChangePhoto, setIsChangePhoto] = useState(false);
   const [isEditActvie, setIsEditActive] = useState(true)
   const dispatch = useDispatch()
@@ -30,27 +31,38 @@ const Profile = ({ user }) => {
     })
   }
 
+  const onChangeAva = (e) => {
+    let file = e.target.files[0]
+    console.log(file);
+    setAvaPreview(URL.createObjectURL(file))
+    setAvatar(file)
+    setIsChangePhoto(true);
+    file = null
+
+  }
+
   const handleChangeImage = async () => {
     const formData = new FormData();
     formData
-      .append("photo", photo)
-      // updatePhoto(formData)
+      .append("avatar", avatar)
+    updateAva(formData)
       .then((result) => {
         Swal.fire({
           title: "Success",
           text: "update photo succes",
           icon: "success",
         });
-        // dispatch(getProfile())
+        dispatch(getProfile())
         setIsChangePhoto(false);
       })
       .catch((err) => {
         Swal.fire({
           title: "Error",
-          text: `${err.response.data.error}`,
+          text: `Gagal Update Avatar`,
           icon: "error",
         });
       });
+    setAvaPreview(profile.avatar)
     setIsChangePhoto(false);
   };
 
@@ -87,6 +99,7 @@ const Profile = ({ user }) => {
         phone: profile.phone || "No Number",
         bio: profile.bio || "saya adalah seorang kapiten",
       });
+      setAvaPreview(profile.avatar)
       // console.log('apakah ini jalan');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,7 +111,7 @@ const Profile = ({ user }) => {
         <>
           <div className="d-flex flex-column justify-content-center align-items-center">
             {profile.avatar ? (
-              <img className={style.photoProfile} style={{ width: "80px", height: "80px" }} src={`${"http://localhost:4000/img/default.png"}`} alt="" />
+              <img className={style.photoProfile} style={{ width: "80px", height: "80px" }} src={avaPreview} alt="" />
             ) : (
               <img className={style.photoProfile} style={{ width: "80px", height: "80px" }} src={`http://localhost:4000/img/default.png`} alt="" />
             )}
@@ -112,15 +125,27 @@ const Profile = ({ user }) => {
                 type="file"
                 id="files"
                 onChange={(e) => {
-                  setPhoto(e.target.files[0]);
-                  setIsChangePhoto(true);
+                  onChangeAva(e)
                 }}
               />
             </div>
             {isChangePhoto && (
-              <button style={{ backgroundColor: "white", borderRadius: "5px", width: "60px", marginTop: "10px" }} onClick={handleChangeImage} type="submit">
-                Save
-              </button>
+              <div>
+                <button style={{ backgroundColor: "white", borderRadius: "5px", width: "60px", marginTop: "10px" }} onClick={handleChangeImage} type="submit">
+                  Save
+                </button>
+                <button style={{ backgroundColor: "white", borderRadius: "5px", width: "60px", marginTop: "10px" }} onClick={
+                  () => {
+                    setAvaPreview(profile.avatar)
+                    setAvatar("")
+                    setIsChangePhoto(false)
+                  }
+                }
+                  type="submit">
+                  Cancel
+                </button>
+              </div>
+
             )}
             {/* <label style={{ fontWeight: "bold", marginBottom: "20px", marginTop: "10px" }} htmlFor="">
               {profile.name}
