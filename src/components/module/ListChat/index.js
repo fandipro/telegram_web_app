@@ -172,7 +172,7 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
                 type="text"
                 className="form-control my-3"
                 placeholder="Search..."
-                // value={searchName}
+              // value={searchName}
               />
             </div>
             <img src={plus} style={{ marginLeft: "15px" }} alt="" />
@@ -185,14 +185,15 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
         listContact?.map((items, index) =>
           items.user.id !== user.id ? (
             <div key={index} className="px-3 d-none d-md-block">
-              <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
+              <div></div>
+              <a href="#chat" id="idku" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
                 <div className="d-flex align-items-start">
                   {items.user.avatar ? (
                     <img alt="" src={items.user.avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
                   ) : (
                     <img alt="" src={avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
                   )}
-                  <div className="flex-grow-1 ml-3">
+                  <div id="chat" className="flex-grow-1 ml-3">
                     <label htmlFor=""> {items.user.name}</label>
                     <label
                       htmlFor=""
