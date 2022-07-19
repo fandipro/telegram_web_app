@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "reactstrap";
 import Drawer from "react-modern-drawer";
-import 'react-modern-drawer/dist/index.css'
+import "react-modern-drawer/dist/index.css";
 import Menu from "../../../assets/icons/menu.svg";
 import settingicon from "../../../assets/icons/setting.svg";
 import callicon from "../../../assets/icons/call.svg";
@@ -13,6 +13,7 @@ import logout from "../../../assets/icons/logout.svg";
 import plus from "../../../assets/icons/plus.svg";
 import Profile from "../Profile";
 import avatar from "../../../assets/images/ava.png";
+import { useNavigate } from "react-router-dom";
 
 const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
   const [dropdownOpen, setOpen] = useState(false);
@@ -23,11 +24,16 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
   // const [activeReceiver, setActiveReceiver] = useState({})
   // console.log('apakah ini jalan');
   // console.log(user);
+  const navigate = useNavigate();
+  const onLogout = () => {
+    localStorage.clear();
+    return navigate("/login");
+  };
   const selectReceiver = (item) => {
     setListChat([]);
-    props.setReceiver(item)
-    localStorage.setItem('receiver', JSON.stringify(item));
-    console.log('apakah receiver jalan');
+    props.setReceiver(item);
+    localStorage.setItem("receiver", JSON.stringify(item));
+    console.log("apakah receiver jalan");
     // const data2 = {
     //   message: 'aku adalah seorang kapiten'
     // }
@@ -140,10 +146,7 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
                   src={logout}
                   alt=""
                 />
-                <DropdownItem
-                  style={{ color: "white", marginBottom: "10px" }}
-                // onClick={onLogout}
-                >
+                <DropdownItem style={{ color: "white", marginBottom: "10px" }} onClick={onLogout}>
                   Logout
                 </DropdownItem>
               </div>
@@ -169,52 +172,50 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
                 type="text"
                 className="form-control my-3"
                 placeholder="Search..."
-              // value={searchName}
+                // value={searchName}
               />
             </div>
             <img src={plus} style={{ marginLeft: "15px" }} alt="" />
           </div>
         </form>
       </div>
-      {
-        props.isLoading ? (
-          <div>Laoding</div>
-        ) : (
-          listContact?.map((items, index) =>
-            items.user.id !== user.id ? (
-              <div key={index} className="px-3 d-none d-md-block">
-                <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
-                  <div className="d-flex align-items-start">
-                    {items.user.avatar ? (
-                      <img alt="" src={items.user.avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
-                    ) : (
-                      <img alt="" src={avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
-                    )}
-                    <div className="flex-grow-1 ml-3">
-                      <label htmlFor=""> {items.user.name}</label>
-                      <label
-                        htmlFor=""
-                        style={{
-                          color: "#848484",
-                          position: "absolute",
-                          right: "0px",
-                        }}
-                      >
-                        {items.message[0]?.created_at}
-                      </label>
-                      <div className="small" style={{ color: "#7E98DF" }}>
-                        <span className="fas fa-circle chat-online">{items.message[0]?.chat}</span>
-                      </div>
+      {props.isLoading ? (
+        <div>Laoding</div>
+      ) : (
+        listContact?.map((items, index) =>
+          items.user.id !== user.id ? (
+            <div key={index} className="px-3 d-none d-md-block">
+              <a href="#" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
+                <div className="d-flex align-items-start">
+                  {items.user.avatar ? (
+                    <img alt="" src={items.user.avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
+                  ) : (
+                    <img alt="" src={avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
+                  )}
+                  <div className="flex-grow-1 ml-3">
+                    <label htmlFor=""> {items.user.name}</label>
+                    <label
+                      htmlFor=""
+                      style={{
+                        color: "#848484",
+                        position: "absolute",
+                        right: "0px",
+                      }}
+                    >
+                      {items.message[0]?.created_at}
+                    </label>
+                    <div className="small" style={{ color: "#7E98DF" }}>
+                      <span className="fas fa-circle chat-online">{items.message[0]?.chat}</span>
                     </div>
                   </div>
-                </a>
-              </div>
-            ) : null
-          )
+                </div>
+              </a>
+            </div>
+          ) : null
         )
-      }
+      )}
       <hr className="d-block d-lg-none mt-1 mb-0" />
-    </div >
+    </div>
   );
 };
 

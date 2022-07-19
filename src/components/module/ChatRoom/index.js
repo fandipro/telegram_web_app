@@ -84,7 +84,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
     <div className={`${style.main_chat} col-12 col-lg-7 col-xl-9`}>
       {receiver.user ? (
         // header chat
-        <div className={`${style.header_chat} py-2 px-4 d-none bg-primary d-lg-block`}>
+        <div className={`${style.header_chat} py-2 px-4 d-none d-lg-block`}>
           <div className="d-flex align-items-center py-1">
             <div className="position-relative">
               {receiver.user.avatar ? (

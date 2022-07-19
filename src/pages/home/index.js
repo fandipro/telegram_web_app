@@ -32,7 +32,12 @@ const Home = () => {
     // const resultSocket = io("http://localhost:4000");
     const token = localStorage.getItem("token");
     // console.log(token);
-    const resultSocket = io("http://localhost:4000", {
+    // const resultSocket = io("http://localhost:4000", {
+    //   query: {
+    //     token,
+    //   },
+    // });
+    const resultSocket = io("https://chatan-app.herokuapp.com", {
       query: {
         token,
       },

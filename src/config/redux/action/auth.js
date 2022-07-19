@@ -30,7 +30,7 @@ export const register = async (data, alert, navigate) => {
 export const login = (data, alert, navigate) => async (dispatch) => {
   try {
     dispatch({ type: "USER_LOGIN_PENDING" });
-    const result = await axios.post("http://localhost:4000/v1/auth/login", data);
+    const result = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, data);
     const user = result.data.data;
     localStorage.setItem("token", user.token);
     localStorage.setItem("id", user.id);
@@ -41,9 +41,21 @@ export const login = (data, alert, navigate) => async (dispatch) => {
       text: `${user.name}`,
       icon: "Success",
     });
-    navigate("/home");
+    navigate("/");
   } catch (error) {
     console.log(error);
-    alert("Password dan email salah");
+    if (error.response.status === 403) {
+      alert.fire({
+        title: "Error",
+        text: `${error.response.data.message}`,
+        icon: "errror",
+      });
+    } else {
+      alert.fire({
+        title: "Error",
+        text: `Error Network`,
+        icon: "errror",
+      });
+    }
   }
 };
