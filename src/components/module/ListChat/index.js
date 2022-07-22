@@ -186,7 +186,11 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
           items.user.id !== user.id ? (
             <div key={index} className="px-3 d-none d-md-block">
               <div></div>
-              <a href="#chat" id="idku" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
+              {/* <a href="" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
+                
+              </a> */}
+              {/* onClick={() => selectReceiver(items)} */}
+              <div className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
                 <div className="d-flex align-items-start">
                   {items.user.avatar ? (
                     <img alt="" src={items.user.avatar} className="rounded-circle mr-1" width="40" height="40" style={{ marginRight: "15px" }} />
@@ -210,7 +214,7 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </div>
             </div>
           ) : null
         )
