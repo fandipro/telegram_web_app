@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Drawer from "react-modern-drawer";
 import DetailProfile from "../DetailProfile";
+import moment from "moment";
 
 import profileMenu from "../../../assets/icons/profileMenu.svg";
 import plus from "../../../assets/icons/plus.svg";
@@ -34,6 +35,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
       sender_avatar: props.user.avatar,
       receiver_avatar: receiver.avatar,
       chat: props.chat,
+      created_at: moment(new Date()).format("LT"),
     };
 
     setListChat([...listChat, payload]);
@@ -58,19 +60,27 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const data = {
-          sender: items.sender,
-          receiver: items.receiver,
-          id: items.id,
-        };
-        socketio.emit("delete-message", data);
-        listChat.pop();
-        Swal.fire("Deleted!", "Your message has been deleted.", "success");
-        setListChat([...listChat]);
-      }
-    });
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          const newListChat = listChat.filter((item) => {
+            return items.id !== item.id;
+          });
+          setListChat([...newListChat]);
+          const data = {
+            sender: props.user.id,
+            receiver: receiver.user.id,
+            id: items.id,
+          };
+          socketio.emit("delete-message", data);
+          // listChat.pop();
+
+          Swal.fire("Deleted!", "Your message has been deleted.", "success");
+        }
+      })
+      .catch((err) => {
+        Swal.fire("Deleted!", "Failed", "Gagal");
+      });
   };
 
   useEffect(() => {
@@ -78,7 +88,9 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listChat]);
 
-  console.log(listChat);
+  // console.log(listChat);
+  console.log("lihat isi reveiver");
+  console.log(receiver);
 
   return (
     <div className={`${style.main_chat} col-12 col-lg-7 col-xl-9`}>
@@ -95,7 +107,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
             </div>
             <div className="flex-grow-1 pl-3">
               <strong>{receiver.user.username}</strong>
-              <div style={{ color: "#7E98DF" }}>Online</div>
+              <div style={{ color: "#7E98DF" }}>{receiver.user.is_online === 1 ? "Online" : "Not Online"}</div>
             </div>
             <div>
               <button onClick={toggleDrawer2} className="btn btn-light border btn-lg px-3">

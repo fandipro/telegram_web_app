@@ -27,6 +27,12 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
   const navigate = useNavigate();
   const onLogout = () => {
     localStorage.clear();
+    const data = {
+      isOnline: 0,
+      id: user.id,
+      updatedAt: new Date(Date.now()),
+    };
+    socketio.emit("force-disconnect", data);
     return navigate("/login");
   };
   const selectReceiver = (item) => {
@@ -56,12 +62,14 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
     setIsOpenProfile((prevState) => !prevState);
   };
 
+  console.log("ini isi listcontact");
   console.log(listContact);
   // console.log(props.receiver);
   return (
     <div className="col-12 col-lg-5 col-xl-3 border-right">
       {/* header sidebar */}
-      <div className="px-4 d-none d-md-block">
+      {/* <div className="px-4 d-none d-md-block"> */}
+      <div className="px-4 d-md-block">
         {/* menu */}
         <div className="">
           <label
@@ -172,7 +180,7 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
                 type="text"
                 className="form-control my-3"
                 placeholder="Search..."
-              // value={searchName}
+                // value={searchName}
               />
             </div>
             <img src={plus} style={{ marginLeft: "15px" }} alt="" />
@@ -184,7 +192,8 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
       ) : (
         listContact?.map((items, index) =>
           items.user.id !== user.id ? (
-            <div key={index} className="px-3 d-none d-md-block">
+            // <div key={index} className="px-3 d-none d-md-block">
+            <div key={index} className="px-3 d-md-block">
               <div></div>
               {/* <a href="" className="list-group-item list-group-item-action border-0" onClick={() => selectReceiver(items)}>
                 
