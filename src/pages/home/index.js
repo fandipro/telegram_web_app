@@ -38,16 +38,16 @@ const Home = () => {
     // const resultSocket = io("http://localhost:4000");
     const token = localStorage.getItem("token");
     // console.log(token);
-    const resultSocket = io("http://localhost:4000", {
-      query: {
-        token,
-      },
-    });
-    // const resultSocket = io("https://chatan-app.herokuapp.com", {
+    // const resultSocket = io("http://localhost:4000", {
     //   query: {
     //     token,
     //   },
     // });
+    const resultSocket = io("https://chatan-app.herokuapp.com", {
+      query: {
+        token,
+      },
+    });
     resultSocket.on("send-message-response", (response) => {
       console.log("apakah respon jalan");
       console.log(response);
