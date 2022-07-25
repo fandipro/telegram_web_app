@@ -216,7 +216,7 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
                         right: "0px",
                       }}
                     >
-                      {items.message[0]?.created_at}
+                      {items.message[0]&& new Date(items.message[0].created_at).getHours()}{items.message[0] && ':' }{items.message[0]&&new Date(items.message[0].created_at).getMinutes()}
                     </label>
                     <div className="small" style={{ color: "#7E98DF" }}>
                       <span className="fas fa-circle chat-online">{items.message[0]?.chat}</span>

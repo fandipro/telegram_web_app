@@ -37,7 +37,7 @@ const Home = () => {
   useEffect(() => {
     // const resultSocket = io("http://localhost:4000");
     const token = localStorage.getItem("token");
-    // console.log(token);
+    // // console.log(token);
     // const resultSocket = io("http://localhost:4000", {
     //   query: {
     //     token,

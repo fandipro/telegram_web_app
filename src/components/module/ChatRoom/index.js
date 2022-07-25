@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Drawer from "react-modern-drawer";
 import DetailProfile from "../DetailProfile";
-import moment from "moment";
+// import moment from "moment";
 
 import profileMenu from "../../../assets/icons/profileMenu.svg";
 import plus from "../../../assets/icons/plus.svg";
@@ -35,7 +35,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
       sender_avatar: props.user.avatar,
       receiver_avatar: receiver.avatar,
       chat: props.chat,
-      created_at: moment(new Date()).format("LT"),
+      // created_at: moment(new Date()).format("LT"),
     };
 
     setListChat([...listChat, payload]);
@@ -91,6 +91,8 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
   // console.log(listChat);
   console.log("lihat isi reveiver");
   console.log(receiver);
+  console.log("ini list chat");
+  console.log(listChat);
 
   return (
     <div className={`${style.main_chat} col-12 col-lg-7 col-xl-9`}>
@@ -140,7 +142,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
                     <div>
                       {items.sender_avatar ? <img alt="" src={items.sender_avatar} className="rounded-circle mr-1" width="40" height="40" /> : <img alt="" src={defaultAva} className="rounded-circle mr-1" width="40" height="40" />}
 
-                      <div className="text-muted small text-nowrap mt-2">{items.created_at}</div>
+                      <div className="text-muted small text-nowrap mt-2">{new Date(items.created_at).getHours()}:{new Date(items.created_at).getMinutes()}</div>
                     </div>
                     <div
                       style={{
@@ -168,7 +170,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
                     <div>
                       {items.sender_avatar ? <img alt="" src={items.sender_avatar} className="" width="40" height="40" /> : <img alt="rava" src={defaultAva} className="rounded-circle mr-1" width="40" height="40" />}
 
-                      <div className="text-muted small text-nowrap mt-2">{items.created_at}</div>
+                      <div className="text-muted small text-nowrap mt-2">{new Date(items.created_at).getHours()}:{new Date(items.created_at).getMinutes()}</div>
                     </div>
                     {/* balon chat left */}
                     <div
