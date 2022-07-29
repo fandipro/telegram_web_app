@@ -169,7 +169,7 @@ const Profile = ({ user }) => {
                   <Label>
                     Account
                   </Label>
-                  <p className="mt-3">081818</p>
+                  <p className="mt-3">{profile.phone}</p>
                   <p className={style.text}>Phone Number</p>
                   <hr className={style.hr} />
                 </div>
