@@ -33,7 +33,7 @@ const ListChat = ({ listContact, user, setListChat, socketio, ...props }) => {
       updatedAt: new Date(Date.now()),
     };
     socketio.emit("force-disconnect", data);
-    return navigate("/login");
+    return navigate("/");
   };
   const selectReceiver = (item) => {
     setListChat([]);
