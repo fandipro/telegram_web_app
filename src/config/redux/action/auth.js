@@ -41,7 +41,7 @@ export const login = (data, alert, navigate) => async (dispatch) => {
       text: `${user.name}`,
       icon: "Success",
     });
-    navigate("/");
+    navigate("/home");
   } catch (error) {
     console.log(error);
     if (error.response.status === 403) {

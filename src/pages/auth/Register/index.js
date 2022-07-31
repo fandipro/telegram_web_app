@@ -50,7 +50,7 @@ const Register = () => {
             <div className="card" style={{ width: "auto", borderRadius: "5%" }}>
                 <div className="card-body">
                     <div className={styleAuth.tittle}>
-                        <Link to="/login">
+                        <Link to="/">
                             <img className={styleAuth.goBack} src={backIcon} alt="" />
                         </Link>
                         <h5 className={"card-title"}>Register</h5>
