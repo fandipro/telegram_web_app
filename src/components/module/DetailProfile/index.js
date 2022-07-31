@@ -35,7 +35,7 @@ const DetailProfile = ({ receiver }) => {
             </label>
             <label style={{ textDecoration: "none", color: "black", fontWeight: "bold", marginTop: "10px" }} htmlFor="">
               {" "}
-              phone number
+              Phone Number
             </label>
             <label style={{ fontSize: "18px", marginTop: "5px" }} htmlFor="">
               {receiver.user.phone}

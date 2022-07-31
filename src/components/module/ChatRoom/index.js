@@ -26,6 +26,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
     e.preventDefault();
     // const user = JSON.parse(localStorage.getItem("user"));
     const receiver = JSON.parse(localStorage.getItem("receiver"));
+    // const time = moment(new Date()).format("LT")
 
     const payload = {
       sender_id: props.user.id,
@@ -35,10 +36,15 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
       sender_avatar: props.user.avatar,
       receiver_avatar: receiver.avatar,
       chat: props.chat,
-      // created_at: moment(new Date()).format("LT"),
+      // created_at: `${new Date(time).getHours()}:${new Date(time).getMinutes()}`
+      // created_at: time
     };
 
+    console.log('ini waktu pesan dibuat');
+    console.log(payload.created_at);
+
     setListChat([...listChat, payload]);
+    // console.log(listChat);
 
     const data = {
       sender: props.user.id,
@@ -66,14 +72,20 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
           const newListChat = listChat.filter((item) => {
             return items.id !== item.id;
           });
-          setListChat([...newListChat]);
+          // console.log('ini chat yang akan didelete');
+          // console.log(items);
           const data = {
             sender: props.user.id,
             receiver: receiver.user.id,
             id: items.id,
           };
           socketio.emit("delete-message", data);
-          // listChat.pop();
+          // console.log(`ini data id================`);
+          // console.log(data.id);
+          // console.log(items.id);
+          // console.log(`ini data kumpulan===========`);
+          console.log(listChat);
+          setListChat([...newListChat]);
 
           Swal.fire("Deleted!", "Your message has been deleted.", "success");
         }
@@ -143,6 +155,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
                       {items.sender_avatar ? <img alt="" src={items.sender_avatar} className="rounded-circle mr-1" width="40" height="40" /> : <img alt="" src={defaultAva} className="rounded-circle mr-1" width="40" height="40" />}
 
                       <div className="text-muted small text-nowrap mt-2">{new Date(items.created_at).getHours()}:{new Date(items.created_at).getMinutes()}</div>
+                      {/* <div className="text-muted small text-nowrap mt-2">{moment(items.created_at).format("LT")}</div> */}
                     </div>
                     <div
                       style={{
@@ -171,6 +184,7 @@ const ChatRoom = ({ style, receiver, listChat, setListChat, socketio, ...props }
                       {items.sender_avatar ? <img alt="" src={items.sender_avatar} className="" width="40" height="40" /> : <img alt="rava" src={defaultAva} className="rounded-circle mr-1" width="40" height="40" />}
 
                       <div className="text-muted small text-nowrap mt-2">{new Date(items.created_at).getHours()}:{new Date(items.created_at).getMinutes()}</div>
+                      {/* <div className="text-muted small text-nowrap mt-2">{moment(items.created_at).format("LT")}</div> */}
                     </div>
                     {/* balon chat left */}
                     <div
